@@ -39,12 +39,12 @@ public class Logic {
         return rst;
     }
 
-    public boolean isFree(Cell ... cells) {
+    public boolean isFree(Cell... cells) {
         boolean result = cells.length > 0;
         for (Cell cell : cells) {
             if (this.findBy(cell) != -1) {
-               result = false;
-               break;
+                result = false;
+                break;
             }
         }
         return result;
@@ -71,6 +71,47 @@ public class Logic {
     public boolean isWin() {
         int[][] table = this.convert();
         boolean result = false;
+        int countHorizontal = 0;
+        int countVertical = 0;
+
+        //check horizontal lines.
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                if (table[i][j] == 1) {
+                    int sizeOfCurrentLine = table[j].length;
+                    while (j < sizeOfCurrentLine && table[i][j] == 1) {
+                        countHorizontal++;
+                        j++;
+                    }
+                    if (countHorizontal == sizeOfCurrentLine) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            countHorizontal = 0;
+        }
+
+        //check vertical lines
+        if (!result) {
+            for (int i = 0; i < table.length; i++) {
+                for (int j = 0; j < table[i].length; j++) {
+                    if (table[i][j] == 1) {
+                        int tempIndex = i;
+                        while (tempIndex < table.length && table[tempIndex][j] == 1) {
+                            tempIndex++;
+                            countVertical++;
+                        }
+                        if (countVertical == table.length) {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                countVertical = 0;
+            }
+        }
+
         return result;
     }
 
