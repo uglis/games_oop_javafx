@@ -71,47 +71,43 @@ public class Logic {
     public boolean isWin() {
         int[][] table = this.convert();
         boolean result = false;
-        int countHorizontal = 0;
-        int countVertical = 0;
+        int horizontal = 0;
+        int vertical = 0;
 
-        //check horizontal lines.
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table[i].length; j++) {
                 if (table[i][j] == 1) {
-                    int sizeOfCurrentLine = table[j].length;
-                    while (j < sizeOfCurrentLine && table[i][j] == 1) {
-                        countHorizontal++;
+                    int current = table[j].length;
+                    while (j < current && table[i][j] == 1) {
+                        horizontal++;
                         j++;
                     }
-                    if (countHorizontal == sizeOfCurrentLine) {
+                    if (horizontal == current) {
                         result = true;
                         break;
                     }
                 }
             }
-            countHorizontal = 0;
+            horizontal = 0;
         }
-
-        //check vertical lines
         if (!result) {
             for (int i = 0; i < table.length; i++) {
                 for (int j = 0; j < table[i].length; j++) {
                     if (table[i][j] == 1) {
-                        int tempIndex = i;
-                        while (tempIndex < table.length && table[tempIndex][j] == 1) {
-                            tempIndex++;
-                            countVertical++;
+                        int current = i;
+                        while (current < table.length && table[current][j] == 1) {
+                            current++;
+                            vertical++;
                         }
-                        if (countVertical == table.length) {
+                        if (vertical == table.length) {
                             result = true;
                             break;
                         }
                     }
                 }
-                countVertical = 0;
+                vertical = 0;
             }
         }
-
         return result;
     }
 
