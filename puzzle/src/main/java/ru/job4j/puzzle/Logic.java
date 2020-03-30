@@ -68,44 +68,33 @@ public class Logic {
         return rst;
     }
 
+
     public boolean isWin() {
         int[][] table = this.convert();
         boolean result = false;
-        int horizontal = 0;
-        int vertical = 0;
-
+        int count1 = 0;
+        int count2 = 0;
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table[i].length; j++) {
                 if (table[i][j] == 1) {
-                    int current = table[j].length;
-                    while (j < current && table[i][j] == 1) {
-                        horizontal++;
-                        j++;
+                    int temp1 = i;
+                    int temp2 = j;
+                    while (temp2 < table[j].length && table[temp1][temp2] == 1) {
+                        temp2++;
+                        count1++;
                     }
-                    if (horizontal == current) {
-                        result = true;
-                        break;
-                    }
-                }
-            }
-            horizontal = 0;
-        }
-        if (!result) {
-            for (int i = 0; i < table.length; i++) {
-                for (int j = 0; j < table[i].length; j++) {
-                    if (table[i][j] == 1) {
-                        int current = i;
-                        while (current < table.length && table[current][j] == 1) {
-                            current++;
-                            vertical++;
-                        }
-                        if (vertical == table.length) {
-                            result = true;
-                            break;
-                        }
+                    temp2 = j;
+                    while (temp1 < table.length && table[temp1][temp2] == 1) {
+                        temp1++;
+                        count2++;
                     }
                 }
-                vertical = 0;
+                if (count1 == table[j].length || count2 == table.length) {
+                    result = true;
+                    break;
+                }
+                count1 = 0;
+                count2 = 0;
             }
         }
         return result;
