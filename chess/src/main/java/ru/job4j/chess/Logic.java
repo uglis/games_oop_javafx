@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * //TODO add comments.
  *
- * @author Petr Arsentev (parsentev@yandex.ru)
+ * @author Noroc Igor (workuglis@gmail.com).
  * @version $Id$
  * @since 0.1
  */
@@ -23,20 +23,33 @@ public class Logic {
 
     public boolean move(Cell source, Cell dest) {
         boolean rst = false;
-        int index = this.findBy(source);
-        if (index != -1) {
-            Cell[] steps = this.figures[index].way(source, dest);
-            int count = 0;
-            for (Figure figure : figures) {
-                for (Cell step : steps) {
-                    if (figure != null && figure.position().equals(Cell.findBy(step.x, step.y))) {
-                        count++;
-                    }
+        try {
+            int index = this.findBy(source);
+            if (index != -1) {
+                Cell[] steps = this.figures[index].way(source, dest);
+                if (steps.length > 0 && steps[steps.length - 1].equals(dest) && isWayFree(steps)) {
+                    rst = true;
+                    this.figures[index] = this.figures[index].copy(dest);
                 }
             }
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest) && count == 0) {
-                rst = true;
-                this.figures[index] = this.figures[index].copy(dest);
+        } catch (Exception e) {
+            System.out.println("Данная фигура так не ходит!");
+        }
+        return rst;
+    }
+
+    /**
+     * Провераяем свободен ли путь нашей фигуры.
+     *
+     * @param way путь.
+     * @return истина или ложь.
+     */
+    public boolean isWayFree(Cell[] way) {
+        boolean rst = true;
+        for (Cell cell : way) {
+            if (findBy(Cell.findBy(cell.x, cell.y)) != -1) {
+                rst = false;
+                break;
             }
         }
         return rst;
