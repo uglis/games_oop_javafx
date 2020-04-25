@@ -1,10 +1,11 @@
 package job4j.tictactoe;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class Logic3T {
     private final Figure3T[][] table;
@@ -61,22 +62,10 @@ public class Logic3T {
      * @return Правда или ложь.
      */
     public boolean hasGap() {
-        boolean rsl = true;
-        int countX = 0;
-        int countO = 0;
-        for (Figure3T[] figure3TS : table) {
-            for (Figure3T figure3T : figure3TS) {
-                if (figure3T.hasMarkX()) {
-                    countX++;
-                }
-                if (figure3T.hasMarkO()) {
-                    countO++;
-                }
-            }
-        }
-        if (countX > 4 || countO > 4) {
-            rsl = false;
-        }
-        return rsl;
+        Optional<Figure3T> rsl = Stream.of(table)
+                .flatMap(Arrays::stream)
+                .filter(figure3T -> !figure3T.hasMarkO() && !figure3T.hasMarkX())
+                .findAny();
+        return rsl.isPresent();
     }
 }
